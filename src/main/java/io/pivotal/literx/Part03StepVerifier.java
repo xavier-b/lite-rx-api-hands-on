@@ -62,11 +62,12 @@ public class Part03StepVerifier {
 
 	// TODO Expect 10 elements then complete and notice how long the test takes.
 	void expect10Elements(Flux<Long> flux) {
-		StepVerifier.create(flux)
+		Duration d = StepVerifier.create(flux)
 				.expectNextCount(10)
 				.expectComplete()
 				.log()
 				.verify();
+		System.out.println(d.toString());
 	}
 
 //========================================================================================
@@ -74,12 +75,14 @@ public class Part03StepVerifier {
 	// TODO Expect 3600 elements at intervals of 1 second, and verify quicker than 3600s
 	// by manipulating virtual time thanks to StepVerifier#withVirtualTime, notice how long the test takes
 	void expect3600Elements(Supplier<Flux<Long>> supplier) {
-		StepVerifier.withVirtualTime(supplier)
+		Duration d = StepVerifier.withVirtualTime(supplier)
 				.expectSubscription()
 				.thenAwait(Duration.ofSeconds(3600))
 				.expectNextCount(3600)
 				.expectComplete()
 				.verify();
+
+		System.out.println(d.toString());
 	}
 
 	private void fail() {
